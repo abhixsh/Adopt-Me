@@ -27,7 +27,7 @@ export default function Navbar() {
                     <Link href="/browse" className="text-xs sm:text-sm font-bold text-gray-700 hover:text-purple-600 transition-colors">
                         Browse Pets
                     </Link>
-                    <Link href="/add-pet" className="hidden md:inline-flex">
+                    <Link href="/add-pet">
                         <button className="px-4 py-2 text-xs sm:text-sm font-bold text-purple-600 border border-purple-600 rounded-md hover:bg-purple-50 transition-colors">
                             List a Pet
                         </button>

@@ -57,7 +57,7 @@ const FeaturedPets = () => {
                             key={pet.id}
                             className="flex flex-col bg-white rounded-2xl shadow-md hover:shadow-lg transition-shadow overflow-hidden border border-gray-100"
                         >
-                            {/* Pet Image Container */}
+
                             <div className="relative h-48 sm:h-56 w-full">
                                 <Image
                                     src={pet.image}
@@ -66,14 +66,13 @@ const FeaturedPets = () => {
                                     className="object-cover"
                                     sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                                 />
-                                {/* Pet Type Badge */}
+
                                 <span className="absolute top-3 right-3 bg-purple-600 text-white text-xs font-medium px-2.5 py-1 rounded-full">
                                     {pet.type}
                                 </span>
 
                             </div>
 
-                            {/* Pet Info */}
                             <div className="flex flex-col flex-grow p-4 sm:p-5">
                                 <div className="flex justify-between items-start mb-2">
                                     <h3 className="text-lg sm:text-xl font-semibold text-gray-800">{pet.name}</h3>
@@ -81,12 +80,12 @@ const FeaturedPets = () => {
                                 </div>
                                 <p className="text-sm text-gray-500 mb-1">{pet.location}</p>
                                 <p className="text-sm font-medium text-gray-700 mb-2">{pet.breed}</p>
-                                
+
                                 <p className="text-sm text-gray-600 mb-4 line-clamp-3 flex-grow">
                                     {pet.description}
                                 </p>
-                                
-                                <Button 
+
+                                <Button
                                     className="w-full bg-purple-600 hover:bg-purple-700 text-white mt-auto"
                                 >
                                     View Details
