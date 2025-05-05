@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { PawPrint, Search, Heart } from "lucide-react";
 import { Button } from "@/app/componants/ui/button";
+import FeatureCard from "@/app/componants/FeatureCard";
 
 export default function Hero() {
   return (
@@ -110,6 +111,7 @@ export default function Hero() {
           </div>
         </div>
       </section>
+      <FeatureCard />
     </div>
   );
 }
