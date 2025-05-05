@@ -33,10 +33,16 @@ export default function Hero() {
 
                 </Link>
                 <Link href="/add-pet" className="w-full sm:w-auto">
-                  <Button size="lg" variant="outline" className="w-full sm:w-auto text-sm sm:text-base">
+                  <Button
+                    size="lg"
+                    variant="outline"
+                    className="w-full sm:w-auto text-sm sm:text-base border-purple-600 text-purple-600 hover:bg-gray-100 hover:text-purple-700"
+                  >
                     <PawPrint className="mr-2 h-4 w-4" />
                     List a Pet
                   </Button>
+
+
                 </Link>
               </div>
             </div>
