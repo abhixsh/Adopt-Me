@@ -27,8 +27,10 @@ export default function Navbar() {
                     <Link href="/browse" className="text-xs sm:text-sm font-bold text-gray-700 hover:text-purple-600 transition-colors">
                         Browse Pets
                     </Link>
-                    <Link href="/add-pet" className="text-xs sm:text-sm font-bold text-gray-700 hover:text-purple-600 transition-colors">
-                        List a Pet
+                    <Link href="/add-pet" className="hidden md:inline-flex">
+                        <button className="px-4 py-2 text-xs sm:text-sm font-bold text-purple-600 border border-purple-600 rounded-md hover:bg-purple-50 transition-colors">
+                            List a Pet
+                        </button>
                     </Link>
                 </nav>
 
@@ -46,12 +48,11 @@ export default function Navbar() {
                 </button>
             </div>
 
-            <div 
-                className={`md:hidden overflow-hidden transition-all duration-300 ease-in-out ${
-                    isMenuOpen 
-                        ? "max-h-screen opacity-100" 
-                        : "max-h-0 opacity-0"
-                }`}
+            <div
+                className={`md:hidden overflow-hidden transition-all duration-300 ease-in-out ${isMenuOpen
+                    ? "max-h-screen opacity-100"
+                    : "max-h-0 opacity-0"
+                    }`}
             >
                 <nav className="flex flex-col p-4 sm:p-6 border-t border-purple-50">
                     <Link
