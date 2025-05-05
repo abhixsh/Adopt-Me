@@ -1,8 +1,6 @@
 import React from "react";
 import { Slot } from "@radix-ui/react-slot";
 import { cva } from "class-variance-authority";
-
-// Fallback for merging class names
 function mergeClassNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }

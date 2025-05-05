@@ -26,10 +26,11 @@ export default function Hero() {
               </div>
               <div className="flex flex-col sm:flex-row gap-3 mt-4 sm:mt-6">
                 <Link href="/browse" className="w-full sm:w-auto">
-                  <Button size="lg" className="bg-purple-600 hover:bg-purple-700 w-full sm:w-auto text-sm sm:text-base">
+                  <Button size="lg" className="bg-purple-600 hover:bg-purple-700 text-white w-full sm:w-auto text-sm sm:text-base">
                     <Search className="mr-2 h-4 w-4" />
                     Browse Pets
                   </Button>
+
                 </Link>
                 <Link href="/add-pet" className="w-full sm:w-auto">
                   <Button size="lg" variant="outline" className="w-full sm:w-auto text-sm sm:text-base">
