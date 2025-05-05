@@ -3,24 +3,39 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+
+  --color-red: #e50914;
+  --color-black: #000000;
+  --color-grey: #2d2d2d;
+  --color-gradient-1: #192144;
+  --color-gradient-2: #1e1426;
+  --color-gradient-3: #20101b;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+:root {
+  --foreground-rgb: 0, 0, 0;
+  --background-rgb: 255, 251, 235;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  color: rgb(var(--foreground-rgb));
+  background: rgb(var(--background-rgb));
+}
+
+@layer base {
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-bold;
+  }
+  
+  h1 {
+    @apply text-3xl md:text-5xl;
+  }
+  
+  h2 {
+    @apply text-2xl md:text-4xl;
+  }
+  
+  h3 {
+    @apply text-xl md:text-3xl;
+  }
 }
