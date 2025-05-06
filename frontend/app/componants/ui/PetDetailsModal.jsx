@@ -117,13 +117,18 @@ const PetDetailsModal = ({ pet, onClose }) => {
                     </div>
 
                     <div className="flex flex-col sm:flex-row gap-4 mt-8">
-                        <Button className="flex-1 bg-purple-600 hover:bg-purple-700 text-white">
-                            Call Now
-                        </Button>
-                        <Button className="flex-1" variant="outline">
-                            Ask a Question by email
-                        </Button>
+                        <a href={`tel:${pet.ownerInfo?.phone || ""}`} className="flex-1">
+                            <Button className="w-full bg-purple-600 hover:bg-purple-700 text-white">
+                                Call Now
+                            </Button>
+                        </a>
+                        <a href={`mailto:${pet.ownerInfo?.email || ""}`} className="flex-1">
+                            <Button className="w-full" variant="outline">
+                                Ask a Question by Email
+                            </Button>
+                        </a>
                     </div>
+
                 </div>
             </div>
         </div>
