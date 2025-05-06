@@ -64,9 +64,6 @@ const PetDetailsModal = ({ pet, onClose }) => {
                                     <span>{pet.location}</span>
                                 </div>
                             </div>
-                            <Button className="bg-purple-600 hover:bg-purple-700 text-white">
-                                Adopt Me
-                            </Button>
                         </div>
 
                         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
