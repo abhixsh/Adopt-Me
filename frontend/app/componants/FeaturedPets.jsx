@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from 'next/link';
 import { Button } from "@/app/componants/ui/button";
 import PetCard from "@/app/componants/ui/PetCard";
 import PetDetailsModal from "@/app/componants/ui/PetDetailsModal";
@@ -10,7 +11,6 @@ const FeaturedPets = () => {
     const [selectedPet, setSelectedPet] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
 
-    // Featured pets - showing only 3 for the homepage
     const featuredPets = petsData.slice(0, 3);
 
     const openPetDetails = (pet) => {
@@ -37,29 +37,31 @@ const FeaturedPets = () => {
 
                 <div className="grid gap-6 sm:gap-8 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
                     {featuredPets.map((pet) => (
-                        <PetCard 
-                            key={pet.id} 
-                            pet={pet} 
-                            onClick={openPetDetails} 
+                        <PetCard
+                            key={pet.id}
+                            pet={pet}
+                            onClick={openPetDetails}
                         />
                     ))}
                 </div>
 
                 <div className="mt-10 sm:mt-12 text-center">
-                    <Button
-                        variant="outline"
-                        size="lg"
-                        className="border-purple-600 text-purple-600 hover:bg-gray-100 hover:text-purple-700"
-                    >
-                        View All Pets
-                    </Button>
+                    <Link href="/browse">
+                        <Button
+                            variant="outline"
+                            size="lg"
+                            className="border-purple-600 text-purple-600 hover:bg-gray-100 hover:text-purple-700"
+                        >
+                            View All Pets
+                        </Button>
+                    </Link>
                 </div>
             </div>
 
             {isModalOpen && selectedPet && (
-                <PetDetailsModal 
-                    pet={selectedPet} 
-                    onClose={closePetDetails} 
+                <PetDetailsModal
+                    pet={selectedPet}
+                    onClose={closePetDetails}
                 />
             )}
         </section>
