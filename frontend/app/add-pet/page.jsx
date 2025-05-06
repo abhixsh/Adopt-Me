@@ -18,7 +18,6 @@ const ListPetForm = () => {
         description: "",
         mainPhoto: null,
         additionalPhotos: [],
-        // Contact information fields
         contactName: "",
         contactPhone: "",
         contactEmail: ""
@@ -43,7 +42,6 @@ const ListPetForm = () => {
                 mainPhoto: file
             });
 
-            // Create preview URL
             const reader = new FileReader();
             reader.onload = () => {
                 setMainPhotoPreview(reader.result);
@@ -60,7 +58,6 @@ const ListPetForm = () => {
                 additionalPhotos: [...formData.additionalPhotos, ...files].slice(0, 5)
             });
 
-            // Create preview URLs
             const newPreviews = [];
             files.forEach(file => {
                 const reader = new FileReader();
@@ -85,9 +82,7 @@ const ListPetForm = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        // Handle form submission logic here
         console.log("Form submitted:", formData);
-        // You would typically send this data to your API
     };
 
     return (
@@ -113,9 +108,7 @@ const ListPetForm = () => {
                             <p className="text-gray-500 text-sm mb-6">Fill out the form below with accurate information about the pet.</p>
 
                             <form onSubmit={handleSubmit} className="space-y-6">
-                                {/* Two Column Layout for Basic Info */}
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                    {/* Pet Name */}
                                     <div className="space-y-2">
                                         <label htmlFor="name" className="block text-sm font-medium text-gray-700">
                                             Pet Name
