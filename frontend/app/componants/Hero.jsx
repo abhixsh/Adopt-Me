@@ -56,7 +56,7 @@ export default function Hero() {
               <div className="bg-white rounded-2xl sm:rounded-3xl overflow-hidden shadow-md sm:shadow-lg relative">
                 <div className="relative h-48 sm:h-56 md:h-64 w-full">
                   <Image
-                    src="/api/placeholder/400/400"
+                    src="/Banner.png"
                     alt="French Bulldog"
                     fill
                     className="object-cover rounded-t-2xl sm:rounded-t-3xl"
