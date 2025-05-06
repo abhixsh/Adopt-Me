@@ -1,4 +1,4 @@
-module backend
+module pet-backend
 
 go 1.22.2
 
