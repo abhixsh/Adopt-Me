@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { PawPrint, Upload, Info, MapPin } from "lucide-react";
+import { PawPrint, Upload, Info, MapPin, Mail, Phone, User } from "lucide-react";
 import { Button } from "@/app/componants/ui/button";
 import Navbar from "@/app/componants/Navbar";
 import Footer from "../componants/Footer";
@@ -17,7 +17,11 @@ const ListPetForm = () => {
         location: "",
         description: "",
         mainPhoto: null,
-        additionalPhotos: []
+        additionalPhotos: [],
+        // Contact information fields
+        contactName: "",
+        contactPhone: "",
+        contactEmail: ""
     });
 
     const [mainPhotoPreview, setMainPhotoPreview] = useState(null);
@@ -90,7 +94,6 @@ const ListPetForm = () => {
         <div>
             <Navbar />
             <div className="bg-gray-50 min-h-screen py-10 px-4 sm:px-6">
-
                 <div className="max-w-3xl mx-auto">
                     {/* Header */}
                     <div className="text-center mb-8">
@@ -264,9 +267,78 @@ const ListPetForm = () => {
                                     ></textarea>
                                 </div>
 
+                                {/* Contact Information Section */}
+                                <div className="border-t pt-6">
+                                    <h2 className="text-xl font-semibold text-gray-800 mb-1">Contact Information</h2>
+                                    <p className="text-gray-500 text-sm mb-6">Provide your contact details for potential adopters.</p>
+
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                        {/* Contact Name */}
+                                        <div className="space-y-2 md:col-span-2">
+                                            <label htmlFor="contactName" className="block text-sm font-medium text-gray-700">
+                                                Contact Name
+                                            </label>
+                                            <div className="relative">
+                                                <User className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
+                                                <input
+                                                    type="text"
+                                                    id="contactName"
+                                                    name="contactName"
+                                                    value={formData.contactName}
+                                                    onChange={handleInputChange}
+                                                    placeholder="e.g., Michael Brown"
+                                                    className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent"
+                                                    required
+                                                />
+                                            </div>
+                                        </div>
+
+                                        {/* Contact Phone */}
+                                        <div className="space-y-2">
+                                            <label htmlFor="contactPhone" className="block text-sm font-medium text-gray-700">
+                                                Phone Number
+                                            </label>
+                                            <div className="relative">
+                                                <Phone className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
+                                                <input
+                                                    type="tel"
+                                                    id="contactPhone"
+                                                    name="contactPhone"
+                                                    value={formData.contactPhone}
+                                                    onChange={handleInputChange}
+                                                    placeholder="e.g., (555) 456-7890"
+                                                    className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent"
+                                                    required
+                                                />
+                                            </div>
+                                        </div>
+
+                                        {/* Contact Email */}
+                                        <div className="space-y-2">
+                                            <label htmlFor="contactEmail" className="block text-sm font-medium text-gray-700">
+                                                Email Address
+                                            </label>
+                                            <div className="relative">
+                                                <Mail className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
+                                                <input
+                                                    type="email"
+                                                    id="contactEmail"
+                                                    name="contactEmail"
+                                                    value={formData.contactEmail}
+                                                    onChange={handleInputChange}
+                                                    placeholder="e.g., michael@example.com"
+                                                    className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent"
+                                                    required
+                                                />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
                                 {/* Photo Upload Section */}
-                                <div className="space-y-6">
-                                    <h3 className="text-lg font-medium text-gray-800">Pet Photos</h3>
+                                <div className="space-y-6 border-t pt-6">
+                                    <h2 className="text-xl font-semibold text-gray-800 mt-6 mb-1">Pet Photos</h2>
+                                    <p className="text-gray-500 text-sm mb-6">Upload clear photos of your pet to help them find a home.</p>
 
                                     {/* Main Photo Upload */}
                                     <div className="space-y-2">
