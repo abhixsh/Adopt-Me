@@ -3,8 +3,12 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { PawPrint, Search, Heart } from "lucide-react";
+import { PawPrint, Search, Heart, CheckCircle } from "lucide-react";
 import { Button } from "@/app/componants/ui/button";
+import FeatureCard from "@/app/componants/FeatureCard";
+import Footer from "@/app/componants/Footer";
+import FeaturedPets from "@/app/componants/FeaturedPets";
+
 
 export default function Hero() {
   return (
@@ -52,7 +56,7 @@ export default function Hero() {
               <div className="bg-white rounded-2xl sm:rounded-3xl overflow-hidden shadow-md sm:shadow-lg relative">
                 <div className="relative h-48 sm:h-56 md:h-64 w-full">
                   <Image
-                    src="/api/placeholder/400/400"
+                    src="/Banner.png"
                     alt="French Bulldog"
                     fill
                     className="object-cover rounded-t-2xl sm:rounded-t-3xl"
@@ -75,27 +79,20 @@ export default function Hero() {
 
               <div className="bg-white rounded-2xl sm:rounded-3xl overflow-hidden shadow-md sm:shadow-lg relative">
                 <div className="relative h-48 sm:h-56 md:h-64 w-full">
-                  <Image
-                    src="/api/placeholder/400/400"
-                    alt="Corgi"
-                    fill
-                    className="object-cover rounded-t-2xl sm:rounded-t-3xl"
-                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                  <img
+                    src="https://i.chzbgr.com/full/9479636992/h06ABD837/dog"
+                    alt="Animated GIF"
+                    className="object-cover w-full h-full rounded-t-2xl sm:rounded-t-3xl"
                   />
                 </div>
                 <div className="absolute bottom-2 sm:bottom-4 right-2 sm:right-4 bg-white rounded-lg sm:rounded-xl p-2 sm:p-3 shadow-sm sm:shadow-md flex items-center space-x-2 sm:space-x-3 pr-4 sm:pr-6">
-                  <div className="bg-gray-800 rounded-full p-1 sm:p-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 sm:h-5 sm:w-5 text-white" viewBox="0 0 20 20" fill="currentColor">
-                      <path
-                        fillRule="evenodd"
-                        d="M2.166 4.999A11.954 11.954 000010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                        clipRule="evenodd"
-                      />
-                    </svg>
+
+                  <div className="bg-gray-800 rounded-full p-1 sm:p-2 flex items-center justify-center">
+                    <CheckCircle className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
                   </div>
                   <div>
-                    <p className="font-bold text-gray-800 text-xs sm:text-sm md:text-base">Already Certified</p>
-                    <p className="text-xs text-gray-600 hidden sm:block">It has been legalized.</p>
+                    <p className="font-bold text-gray-800 text-xs sm:text-sm md:text-base">Certified & Approved</p>
+                    <p className="text-xs text-gray-600 hidden sm:block">All pets meet legal adoption standards.</p>
                   </div>
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 sm:h-4 sm:w-4 md:h-5 md:w-5 text-gray-600" viewBox="0 0 20 20" fill="currentColor">
                     <path
@@ -106,10 +103,14 @@ export default function Hero() {
                   </svg>
                 </div>
               </div>
+
             </div>
           </div>
         </div>
       </section>
+      <FeatureCard />
+      <FeaturedPets />
+      <Footer />
     </div>
   );
 }
