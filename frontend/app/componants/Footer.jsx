@@ -5,9 +5,7 @@ const Footer = () => {
     return (
         <footer className="w-full py-8 sm:py-12 bg-gray-100">
             <div className="container px-4 md:px-6 mx-auto">
-                {/* Main Footer Content */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 mb-8">
-                    {/* Logo and About */}
                     <div className="space-y-4">
                         <div className="flex items-center space-x-2">
                             <PawPrint className="h-6 w-6 text-purple-600" />
@@ -37,11 +35,11 @@ const Footer = () => {
                         <ul className="space-y-3">
                             <li className="flex items-start space-x-3">
                                 <MapPin className="h-5 w-5 text-purple-600 flex-shrink-0 mt-0.5" />
-                                <span className="text-sm text-gray-600">123 Adoption Street, Pet City, PC 12345</span>
+                                <span className="text-sm text-gray-600">No. 45, Temple Road, Colombo, Sri Lanka</span>
                             </li>
                             <li className="flex items-center space-x-3">
                                 <Phone className="h-5 w-5 text-purple-600 flex-shrink-0" />
-                                <span className="text-sm text-gray-600">(123) 456-7890</span>
+                                <span className="text-sm text-gray-600">(011) 456-7890</span>
                             </li>
                             <li className="flex items-center space-x-3">
                                 <Mail className="h-5 w-5 text-purple-600 flex-shrink-0" />
