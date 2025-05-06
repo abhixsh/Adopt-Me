@@ -388,27 +388,6 @@ const BrowsePets = () => {
                                         </p>
                                     </div>
 
-                                    <div className="mb-6">
-                                        <h2 className="text-xl font-semibold mb-3">Medical Information</h2>
-                                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                                            <div className="flex items-center">
-                                                <div className={`h-4 w-4 rounded-full mr-2 ${selectedPet.medicalInfo.vaccinated ? 'bg-green-500' : 'bg-red-500'}`}></div>
-                                                <span>{selectedPet.medicalInfo.vaccinated ? 'Vaccinated' : 'Not Vaccinated'}</span>
-                                            </div>
-                                            <div className="flex items-center">
-                                                <div className={`h-4 w-4 rounded-full mr-2 ${selectedPet.medicalInfo.neutered ? 'bg-green-500' : 'bg-red-500'}`}></div>
-                                                <span>{selectedPet.medicalInfo.neutered ? 'Neutered/Spayed' : 'Not Neutered/Spayed'}</span>
-                                            </div>
-                                            <div className="flex items-start">
-                                                <Info className="h-4 w-4 mr-2 mt-1 text-gray-500" />
-                                                <div>
-                                                    <p className="text-sm font-medium">Special Needs</p>
-                                                    <p className="text-sm text-gray-600">{selectedPet.medicalInfo.specialNeeds}</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
                                     <div>
                                         <h2 className="text-xl font-semibold mb-3">Contact Information</h2>
                                         <div className="bg-gray-50 p-4 rounded-lg">
@@ -433,10 +412,10 @@ const BrowsePets = () => {
 
                                 <div className="flex flex-col sm:flex-row gap-4 mt-8">
                                     <Button className="flex-1 bg-purple-600 hover:bg-purple-700 text-white">
-                                        Apply to Adopt
+                                        Call Now
                                     </Button>
                                     <Button className="flex-1" variant="outline">
-                                        Ask a Question
+                                        Ask a Question by email
                                     </Button>
                                 </div>
                             </div>
