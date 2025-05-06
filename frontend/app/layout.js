@@ -12,8 +12,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  title: "Netflix",
-  description: "Netflix Clone",
+  title: "Adopt Me",
+  description: "Adopt a pet today!",
   icons: {
     icon: "/netflix.png",
   },
