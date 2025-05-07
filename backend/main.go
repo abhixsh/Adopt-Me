@@ -1,11 +1,12 @@
 package main
 
 import (
-	"github.com/gin-gonic/gin"
-	"github.com/joho/godotenv"
 	"log"
 	"pet-backend/db"
 	"pet-backend/routes"
+
+	"github.com/gin-gonic/gin"
+	"github.com/joho/godotenv"
 )
 
 func main() {
@@ -18,5 +19,5 @@ func main() {
 
 	router := gin.Default()
 	routes.SetupRoutes(router)
-	router.Run(":8080")
+	router.Run(":8081")
 }
