@@ -30,7 +30,7 @@ export default function Admin() {
     const [formVisible, setFormVisible] = useState(false);
 
     const API_URL = "http://localhost:8080";
-    
+
     // Fetch all pets
     const fetchPets = async () => {
         try {
@@ -151,16 +151,24 @@ export default function Admin() {
 
     const formFields = [
         { key: "name", label: "Pet Name", type: "text", required: true },
-        { key: "type", label: "Pet Type", type: "select", required: true, 
-          options: ["Dog", "Cat", "Bird", "Other"] },
+        {
+            key: "type", label: "Pet Type", type: "select", required: true,
+            options: ["Dog", "Cat", "Bird", "Other"]
+        },
         { key: "breed", label: "Breed", type: "text", required: true },
         { key: "age", label: "Age", type: "number", required: true, step: "0.1" },
-        { key: "gender", label: "Gender", type: "select", required: false,
-          options: ["Male", "Female", "Unknown"] },
-        { key: "size", label: "Size", type: "select", required: false,
-          options: ["Small", "Medium", "Large"] },
-        { key: "location", label: "Location", type: "select", required: true,
-          options: ["San Francisco, CA", "Los Angeles, CA", "Seattle, WA", "Portland, OR"] },
+        {
+            key: "gender", label: "Gender", type: "select", required: false,
+            options: ["Male", "Female", "Unknown"]
+        },
+        {
+            key: "size", label: "Size", type: "select", required: false,
+            options: ["Small", "Medium", "Large"]
+        },
+        {
+            key: "location", label: "Location", type: "select", required: true,
+            options: ["San Francisco, CA", "Los Angeles, CA", "Seattle, WA", "Portland, OR"]
+        },
         { key: "description", label: "Description", type: "textarea", required: true },
         { key: "main_photo", label: "Main Photo URL", type: "text", required: true },
         { key: "contact_name", label: "Contact Name", type: "text", required: true },
@@ -180,9 +188,9 @@ export default function Admin() {
                                 Manage your pet listings and adoptions
                             </p>
                         </div>
-                        
+
                         {!formVisible && (
-                            <Button 
+                            <Button
                                 className="bg-purple-600 hover:bg-purple-700 text-white flex items-center gap-2"
                                 onClick={() => setFormVisible(true)}
                             >
@@ -214,7 +222,7 @@ export default function Admin() {
                                     <X className="h-5 w-5" />
                                 </Button>
                             </div>
-                            
+
                             <form
                                 onSubmit={(e) => {
                                     e.preventDefault();
@@ -224,15 +232,15 @@ export default function Admin() {
                                 className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4"
                             >
                                 {formFields.map((field) => (
-                                    <div 
-                                        key={field.key} 
+                                    <div
+                                        key={field.key}
                                         className={field.type === "textarea" ? "col-span-1 md:col-span-2" : ""}
                                     >
                                         <label className="block text-sm font-medium text-gray-700 mb-1">
                                             {field.label}
                                             {field.required && <span className="text-red-500">*</span>}
                                         </label>
-                                        
+
                                         {field.type === "textarea" ? (
                                             <textarea
                                                 name={field.key}
@@ -316,7 +324,7 @@ export default function Admin() {
                                 Showing {pets.length} {pets.length === 1 ? 'pet' : 'pets'}
                             </p>
                         </div>
-                        
+
                         {loading && !pets.length ? (
                             <div className="text-center py-12">
                                 <Loader2 className="h-8 w-8 animate-spin mx-auto text-purple-600" />
