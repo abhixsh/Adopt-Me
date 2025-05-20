@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { Heart, MapPin } from "lucide-react";
 import { Button } from "@/app/componants/ui/button";
 
@@ -21,12 +20,10 @@ const PetCard = ({ pet, onClick }) => {
                         <Heart className="h-4 w-4 text-gray-400 hover:text-red-500" />
                     </button>
                 </div>
-                <Image
-                    src={pet.image}
+                <img
+                    src={pet.main_photo || "/placeholder-pet.jpg"}
                     alt={pet.name}
-                    fill
-                    className="object-cover"
-                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                    className="h-full w-full object-cover"
                 />
             </div>
 
@@ -39,7 +36,7 @@ const PetCard = ({ pet, onClick }) => {
 
                 <div className="flex justify-between items-center mb-2">
                     <span className="text-sm font-medium">{pet.breed}</span>
-                    <span className="text-sm text-gray-600">{pet.age}</span>
+                    <span className="text-sm text-gray-600">{pet.age} {pet.age === 1 ? 'year' : 'years'}</span>
                 </div>
 
                 <p className="text-sm text-gray-600 line-clamp-3 mb-4 h-14">
