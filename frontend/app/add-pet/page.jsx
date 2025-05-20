@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { PawPrint, Upload, Info, MapPin, Mail, Phone, User } from "lucide-react";
+import { PawPrint, Info, MapPin, Mail, Phone, User, Loader2 } from "lucide-react";
 import { Button } from "@/app/componants/ui/button";
 import Navbar from "@/app/componants/Navbar";
 import Footer from "../componants/Footer";
@@ -16,15 +16,18 @@ const ListPetForm = () => {
         size: "",
         location: "",
         description: "",
-        mainPhoto: null,
-        additionalPhotos: [],
-        contactName: "",
-        contactPhone: "",
-        contactEmail: ""
+        main_photo: "",  // URL only
+        contact_name: "",
+        contact_phone: "",
+        contact_email: ""
     });
 
-    const [mainPhotoPreview, setMainPhotoPreview] = useState(null);
-    const [additionalPhotosPreviews, setAdditionalPhotosPreviews] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
+    const [success, setSuccess] = useState(false);
+    const [photoPreview, setPhotoPreview] = useState(null);
+
+    const API_URL = "http://localhost:8081/api";
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -32,57 +35,76 @@ const ListPetForm = () => {
             ...formData,
             [name]: value
         });
-    };
 
-    const handleMainPhotoChange = (e) => {
-        const file = e.target.files[0];
-        if (file) {
-            setFormData({
-                ...formData,
-                mainPhoto: file
-            });
-
-            const reader = new FileReader();
-            reader.onload = () => {
-                setMainPhotoPreview(reader.result);
-            };
-            reader.readAsDataURL(file);
+        // If changing the main photo URL, update the preview
+        if (name === "main_photo" && value) {
+            setPhotoPreview(value);
         }
     };
 
-    const handleAdditionalPhotosChange = (e) => {
-        const files = Array.from(e.target.files);
-        if (files.length > 0) {
-            setFormData({
-                ...formData,
-                additionalPhotos: [...formData.additionalPhotos, ...files].slice(0, 5)
-            });
-
-            const newPreviews = [];
-            files.forEach(file => {
-                const reader = new FileReader();
-                reader.onload = () => {
-                    newPreviews.push(reader.result);
-                    if (newPreviews.length === files.length) {
-                        setAdditionalPhotosPreviews([...additionalPhotosPreviews, ...newPreviews].slice(0, 5));
-                    }
-                };
-                reader.readAsDataURL(file);
-            });
-        }
-    };
-
-    const removeAdditionalPhoto = (index) => {
+    // Clear the photo preview and URL
+    const clearPhotoUrl = () => {
+        setPhotoPreview(null);
         setFormData({
             ...formData,
-            additionalPhotos: formData.additionalPhotos.filter((_, i) => i !== index)
+            main_photo: ""
         });
-        setAdditionalPhotosPreviews(additionalPhotosPreviews.filter((_, i) => i !== index));
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log("Form submitted:", formData);
+        
+        try {
+            setLoading(true);
+            setError(null);
+            
+            // Prepare the data to match the API expectations
+            const petData = {
+                ...formData,
+                age: parseFloat(formData.age),
+            };
+            
+            // Send the data to the API
+            const res = await fetch(`${API_URL}/pets`, {
+                method: "POST",
+                headers: { 
+                    "Content-Type": "application/json",
+                    "Accept": "application/json"
+                },
+                mode: "cors",
+                credentials: "include",
+                body: JSON.stringify(petData),
+            });
+            
+            if (!res.ok) throw new Error("Failed to submit pet listing");
+            
+            // Show success message and reset form
+            setSuccess(true);
+            setFormData({
+                name: "",
+                type: "",
+                breed: "",
+                age: "",
+                gender: "",
+                size: "",
+                location: "",
+                description: "",
+                main_photo: "",
+                contact_name: "",
+                contact_phone: "",
+                contact_email: ""
+            });
+            setPhotoPreview(null);
+            
+            // Scroll to top to show success message
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            
+        } catch (err) {
+            setError(err.message);
+            console.error("Error listing pet:", err);
+        } finally {
+            setLoading(false);
+        }
     };
 
     return (
@@ -100,6 +122,20 @@ const ListPetForm = () => {
                             Provide details about the pet you want to list for adoption.
                         </p>
                     </div>
+                    
+                    {/* Success Message */}
+                    {success && (
+                        <div className="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded mb-6">
+                            Your pet has been successfully listed for adoption. Thank you!
+                        </div>
+                    )}
+                    
+                    {/* Error Message */}
+                    {error && (
+                        <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded mb-6">
+                            {error}
+                        </div>
+                    )}
 
                     {/* Form Container */}
                     <div className="bg-white rounded-2xl shadow-md overflow-hidden">
@@ -139,11 +175,10 @@ const ListPetForm = () => {
                                             required
                                         >
                                             <option value="" disabled>Select type</option>
-                                            <option value="dog">Dog</option>
-                                            <option value="cat">Cat</option>
-                                            <option value="bird">Bird</option>
-                                            <option value="rabbit">Rabbit</option>
-                                            <option value="other">Other</option>
+                                            <option value="Dog">Dog</option>
+                                            <option value="Cat">Cat</option>
+                                            <option value="Bird">Bird</option>
+                                            <option value="Other">Other</option>
                                         </select>
                                     </div>
 
@@ -197,8 +232,9 @@ const ListPetForm = () => {
                                             required
                                         >
                                             <option value="" disabled>Select gender</option>
-                                            <option value="male">Male</option>
-                                            <option value="female">Female</option>
+                                            <option value="Male">Male</option>
+                                            <option value="Female">Female</option>
+                                            <option value="Unknown">Unknown</option>
                                         </select>
                                     </div>
 
@@ -216,9 +252,9 @@ const ListPetForm = () => {
                                             required
                                         >
                                             <option value="" disabled>Select size</option>
-                                            <option value="small">Small</option>
-                                            <option value="medium">Medium</option>
-                                            <option value="large">Large</option>
+                                            <option value="Small">Small</option>
+                                            <option value="Medium">Medium</option>
+                                            <option value="Large">Large</option>
                                         </select>
                                     </div>
 
@@ -229,16 +265,41 @@ const ListPetForm = () => {
                                         </label>
                                         <div className="relative">
                                             <MapPin className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
-                                            <input
-                                                type="text"
+                                            <select
                                                 id="location"
                                                 name="location"
                                                 value={formData.location}
                                                 onChange={handleInputChange}
-                                                placeholder="e.g., San Francisco, CA"
                                                 className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent"
                                                 required
-                                            />
+                                            >
+                                                <option value="" disabled>Select location</option>
+                                                <option value="Colombo">Colombo</option>
+                                                <option value="Gampaha">Gampaha</option>
+                                                <option value="Kalutara">Kalutara</option>
+                                                <option value="Kandy">Kandy</option>
+                                                <option value="Matale">Matale</option>
+                                                <option value="Nuwara Eliya">Nuwara Eliya</option>
+                                                <option value="Galle">Galle</option>
+                                                <option value="Matara">Matara</option>
+                                                <option value="Hambantota">Hambantota</option>
+                                                <option value="Jaffna">Jaffna</option>
+                                                <option value="Kilinochchi">Kilinochchi</option>
+                                                <option value="Mannar">Mannar</option>
+                                                <option value="Vavuniya">Vavuniya</option>
+                                                <option value="Mullaitivu">Mullaitivu</option>
+                                                <option value="Batticaloa">Batticaloa</option>
+                                                <option value="Ampara">Ampara</option>
+                                                <option value="Trincomalee">Trincomalee</option>
+                                                <option value="Kurunegala">Kurunegala</option>
+                                                <option value="Puttalam">Puttalam</option>
+                                                <option value="Anuradhapura">Anuradhapura</option>
+                                                <option value="Polonnaruwa">Polonnaruwa</option>
+                                                <option value="Badulla">Badulla</option>
+                                                <option value="Monaragala">Monaragala</option>
+                                                <option value="Ratnapura">Ratnapura</option>
+                                                <option value="Kegalle">Kegalle</option>
+                                            </select>
                                         </div>
                                     </div>
                                 </div>
@@ -268,16 +329,16 @@ const ListPetForm = () => {
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                         {/* Contact Name */}
                                         <div className="space-y-2 md:col-span-2">
-                                            <label htmlFor="contactName" className="block text-sm font-medium text-gray-700">
+                                            <label htmlFor="contact_name" className="block text-sm font-medium text-gray-700">
                                                 Contact Name
                                             </label>
                                             <div className="relative">
                                                 <User className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
                                                 <input
                                                     type="text"
-                                                    id="contactName"
-                                                    name="contactName"
-                                                    value={formData.contactName}
+                                                    id="contact_name"
+                                                    name="contact_name"
+                                                    value={formData.contact_name}
                                                     onChange={handleInputChange}
                                                     placeholder="e.g., Michael Brown"
                                                     className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent"
@@ -288,16 +349,16 @@ const ListPetForm = () => {
 
                                         {/* Contact Phone */}
                                         <div className="space-y-2">
-                                            <label htmlFor="contactPhone" className="block text-sm font-medium text-gray-700">
+                                            <label htmlFor="contact_phone" className="block text-sm font-medium text-gray-700">
                                                 Phone Number
                                             </label>
                                             <div className="relative">
                                                 <Phone className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
                                                 <input
                                                     type="tel"
-                                                    id="contactPhone"
-                                                    name="contactPhone"
-                                                    value={formData.contactPhone}
+                                                    id="contact_phone"
+                                                    name="contact_phone"
+                                                    value={formData.contact_phone}
                                                     onChange={handleInputChange}
                                                     placeholder="e.g., (555) 456-7890"
                                                     className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent"
@@ -308,16 +369,16 @@ const ListPetForm = () => {
 
                                         {/* Contact Email */}
                                         <div className="space-y-2">
-                                            <label htmlFor="contactEmail" className="block text-sm font-medium text-gray-700">
+                                            <label htmlFor="contact_email" className="block text-sm font-medium text-gray-700">
                                                 Email Address
                                             </label>
                                             <div className="relative">
                                                 <Mail className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
                                                 <input
                                                     type="email"
-                                                    id="contactEmail"
-                                                    name="contactEmail"
-                                                    value={formData.contactEmail}
+                                                    id="contact_email"
+                                                    name="contact_email"
+                                                    value={formData.contact_email}
                                                     onChange={handleInputChange}
                                                     placeholder="e.g., michael@example.com"
                                                     className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent"
@@ -328,134 +389,53 @@ const ListPetForm = () => {
                                     </div>
                                 </div>
 
-                                {/* Photo Upload Section */}
+                                {/* Photo Upload Section - URL Only */}
                                 <div className="space-y-6 border-t pt-6">
-                                    <h2 className="text-xl font-semibold text-gray-800 mt-6 mb-1">Pet Photos</h2>
-                                    <p className="text-gray-500 text-sm mb-6">Upload clear photos of your pet to help them find a home.</p>
+                                    <h2 className="text-xl font-semibold text-gray-800 mt-6 mb-1">Pet Photo</h2>
+                                    <p className="text-gray-500 text-sm mb-6">Enter a URL to an image of your pet to help them find a home.</p>
 
-                                    {/* Main Photo Upload */}
+                                    {/* Main Photo URL Input */}
                                     <div className="space-y-2">
-                                        <label className="block text-sm font-medium text-gray-700">
-                                            Upload main photo
+                                        <label htmlFor="main_photo" className="block text-sm font-medium text-gray-700">
+                                            Pet Photo URL
                                         </label>
                                         <div className="flex items-center space-x-2 text-xs text-gray-500">
                                             <Info className="h-4 w-4" />
-                                            <span>PNG, JPG up to 5MB</span>
+                                            <span>Enter a direct link to your pet's image</span>
                                         </div>
 
-                                        <div className="mt-2">
-                                            {mainPhotoPreview ? (
-                                                <div className="relative">
-                                                    <img
-                                                        src={mainPhotoPreview}
-                                                        alt="Main photo preview"
-                                                        className="h-40 w-40 object-cover rounded-lg"
-                                                    />
-                                                    <button
-                                                        type="button"
-                                                        onClick={() => {
-                                                            setMainPhotoPreview(null);
-                                                            setFormData({ ...formData, mainPhoto: null });
-                                                        }}
-                                                        className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1"
-                                                    >
-                                                        <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
-                                                            <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
-                                                        </svg>
-                                                    </button>
-                                                </div>
-                                            ) : (
-                                                <div className="flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-lg">
-                                                    <div className="space-y-1 text-center">
-                                                        <Upload className="mx-auto h-12 w-12 text-gray-400" />
-                                                        <div className="flex text-sm text-gray-600">
-                                                            <label htmlFor="main-photo" className="relative cursor-pointer bg-white rounded-md font-medium text-purple-600 hover:text-purple-500">
-                                                                <span>Select File</span>
-                                                                <input
-                                                                    id="main-photo"
-                                                                    name="main-photo"
-                                                                    type="file"
-                                                                    accept="image/*"
-                                                                    className="sr-only"
-                                                                    onChange={handleMainPhotoChange}
-                                                                    required
-                                                                />
-                                                            </label>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            )}
-                                        </div>
-                                    </div>
+                                        <input
+                                            type="url"
+                                            id="main_photo"
+                                            name="main_photo"
+                                            value={formData.main_photo}
+                                            onChange={handleInputChange}
+                                            placeholder="e.g., https://example.com/pet-image.jpg"
+                                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent"
+                                            required
+                                        />
 
-                                    {/* Additional Photos Upload */}
-                                    <div className="space-y-2">
-                                        <label className="block text-sm font-medium text-gray-700">
-                                            Upload additional photos
-                                        </label>
-                                        <div className="flex items-center space-x-2 text-xs text-gray-500">
-                                            <Info className="h-4 w-4" />
-                                            <span>Up to 5 photos</span>
-                                        </div>
-
-                                        {/* Preview of additional photos */}
-                                        {additionalPhotosPreviews.length > 0 && (
-                                            <div className="flex flex-wrap gap-4 mt-2">
-                                                {additionalPhotosPreviews.map((preview, index) => (
-                                                    <div key={index} className="relative">
-                                                        <img
-                                                            src={preview}
-                                                            alt={`Additional photo ${index + 1}`}
-                                                            className="h-24 w-24 object-cover rounded-lg"
-                                                        />
-                                                        <button
-                                                            type="button"
-                                                            onClick={() => removeAdditionalPhoto(index)}
-                                                            className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1"
-                                                        >
-                                                            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
-                                                                <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
-                                                            </svg>
-                                                        </button>
-                                                    </div>
-                                                ))}
-
-                                                {additionalPhotosPreviews.length < 5 && (
-                                                    <label htmlFor="additional-photos" className="h-24 w-24 flex items-center justify-center border-2 border-gray-300 border-dashed rounded-lg cursor-pointer hover:bg-gray-50">
-                                                        <Upload className="h-8 w-8 text-gray-400" />
-                                                        <input
-                                                            id="additional-photos"
-                                                            name="additional-photos"
-                                                            type="file"
-                                                            accept="image/*"
-                                                            multiple
-                                                            className="sr-only"
-                                                            onChange={handleAdditionalPhotosChange}
-                                                        />
-                                                    </label>
-                                                )}
-                                            </div>
-                                        )}
-
-                                        {additionalPhotosPreviews.length === 0 && (
-                                            <div className="flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-lg">
-                                                <div className="space-y-1 text-center">
-                                                    <Upload className="mx-auto h-12 w-12 text-gray-400" />
-                                                    <div className="flex text-sm text-gray-600">
-                                                        <label htmlFor="additional-photos" className="relative cursor-pointer bg-white rounded-md font-medium text-purple-600 hover:text-purple-500">
-                                                            <span>Select Files</span>
-                                                            <input
-                                                                id="additional-photos"
-                                                                name="additional-photos"
-                                                                type="file"
-                                                                accept="image/*"
-                                                                multiple
-                                                                className="sr-only"
-                                                                onChange={handleAdditionalPhotosChange}
-                                                            />
-                                                        </label>
-                                                    </div>
-                                                </div>
+                                        {/* Photo Preview */}
+                                        {photoPreview && (
+                                            <div className="mt-4 relative inline-block">
+                                                <img
+                                                    src={photoPreview}
+                                                    alt="Pet photo preview"
+                                                    className="h-48 w-48 object-cover rounded-lg"
+                                                    onError={() => {
+                                                        setError("Invalid image URL. Please provide a direct link to an image.");
+                                                        clearPhotoUrl();
+                                                    }}
+                                                />
+                                                <button
+                                                    type="button"
+                                                    onClick={clearPhotoUrl}
+                                                    className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1"
+                                                >
+                                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                                                        <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
+                                                    </svg>
+                                                </button>
                                             </div>
                                         )}
                                     </div>
@@ -465,9 +445,17 @@ const ListPetForm = () => {
                                 <div className="pt-4">
                                     <Button
                                         type="submit"
-                                        className="w-full bg-purple-600 hover:bg-purple-700 text-white py-3 rounded-lg font-medium"
+                                        className="w-full bg-purple-600 hover:bg-purple-700 text-white py-3 rounded-lg font-medium flex items-center justify-center"
+                                        disabled={loading}
                                     >
-                                        List Pet for Adoption
+                                        {loading ? (
+                                            <>
+                                                <Loader2 className="h-5 w-5 animate-spin mr-2" />
+                                                Processing...
+                                            </>
+                                        ) : (
+                                            "List Pet for Adoption"
+                                        )}
                                     </Button>
                                 </div>
                             </form>
