@@ -29,7 +29,7 @@ export default function Admin() {
     const [error, setError] = useState(null);
     const [formVisible, setFormVisible] = useState(false);
 
-    const API_URL = "http://localhost:8080";
+    const API_URL = "http://localhost:8081/api";
 
     // Fetch all pets
     const fetchPets = async () => {
@@ -58,28 +58,37 @@ export default function Admin() {
     };
 
     // Create new pet
-    const createPet = async () => {
-        try {
-            setLoading(true);
-            const res = await fetch(`${API_URL}/pets`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    ...form,
-                    age: parseFloat(form.age),
-                }),
-            });
-            if (!res.ok) throw new Error("Failed to create pet");
-            setForm(initialForm);
-            setFormVisible(false);
-            fetchPets();
-        } catch (err) {
-            setError(err.message);
-        } finally {
-            setLoading(false);
-        }
-    };
-
+    // Modified createPet function in your Next.js page
+const createPet = async () => {
+    try {
+        setLoading(true);
+        
+        // Add mode: 'cors' explicitly and ensure all required headers are set
+        const res = await fetch(`${API_URL}/pets`, {
+            method: "POST",
+            headers: { 
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            },
+            mode: "cors", // Explicitly set CORS mode
+            credentials: "include", // Include credentials if your backend supports it
+            body: JSON.stringify({
+                ...form,
+                age: parseFloat(form.age),
+            }),
+        });
+        
+        if (!res.ok) throw new Error("Failed to create pet");
+        setForm(initialForm);
+        setFormVisible(false);
+        fetchPets();
+    } catch (err) {
+        setError(err.message);
+        console.error("Error creating pet:", err);
+    } finally {
+        setLoading(false);
+    }
+};
     // Update pet
     const updatePet = async () => {
         try {
@@ -167,7 +176,17 @@ export default function Admin() {
         },
         {
             key: "location", label: "Location", type: "select", required: true,
-            options: ["San Francisco, CA", "Los Angeles, CA", "Seattle, WA", "Portland, OR"]
+            options: [
+                "Colombo", "Gampaha", "Kalutara",
+                "Kandy", "Matale", "Nuwara Eliya",
+                "Galle", "Matara", "Hambantota",
+                "Jaffna", "Kilinochchi", "Mannar", "Vavuniya", "Mullaitivu",
+                "Batticaloa", "Ampara", "Trincomalee",
+                "Kurunegala", "Puttalam",
+                "Anuradhapura", "Polonnaruwa",
+                "Badulla", "Monaragala",
+                "Ratnapura", "Kegalle"
+            ]
         },
         { key: "description", label: "Description", type: "textarea", required: true },
         { key: "main_photo", label: "Main Photo URL", type: "text", required: true },
