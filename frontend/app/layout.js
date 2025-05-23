@@ -15,15 +15,15 @@ export const metadata = {
   title: "Adopt Me",
   description: "Adopt a pet today!",
   icons: {
-    icon: "/netflix.png",
+    icon: "/dog.png",
   },
-
 };
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body
+        suppressHydrationWarning={true}
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         {children}
