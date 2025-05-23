@@ -13,6 +13,7 @@ const FeaturedPets = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [displayCount, setDisplayCount] = useState(3); // Default to showing 6 pets
 
     const API_URL = "http://localhost:8081/api";
 
@@ -21,7 +22,8 @@ const FeaturedPets = () => {
         const fetchPets = async () => {
             try {
                 setLoading(true);
-                const res = await fetch(`${API_URL}/pets?featured=true&limit=3`, {
+                // Updated to fetch more pets (limit=9 instead of 3)
+                const res = await fetch(`${API_URL}/pets?featured=true&limit=9`, {
                     method: "GET",
                     headers: { 
                         "Accept": "application/json"
@@ -36,9 +38,9 @@ const FeaturedPets = () => {
             } catch (err) {
                 console.error("Error fetching featured pets:", err);
                 setError("Failed to load featured pets. Please try again later.");
-                // Fallback to static data if API fails
+                // Fallback to static data if API fails - now showing more
                 import("@/app/componants/data/petData").then(module => {
-                    setPets(module.petsData.slice(0, 3));
+                    setPets(module.petsData.slice(0, 9));
                 }).catch(err => {
                     console.error("Error loading fallback data:", err);
                 });
@@ -60,6 +62,15 @@ const FeaturedPets = () => {
         setIsModalOpen(false);
         setSelectedPet(null);
         document.body.style.overflow = 'auto';
+    };
+
+    // Function to load more pets
+    const loadMore = () => {
+        if (displayCount + 3 <= pets.length) {
+            setDisplayCount(displayCount + 3);
+        } else {
+            setDisplayCount(pets.length);
+        }
     };
 
     return (
@@ -98,7 +109,7 @@ const FeaturedPets = () => {
                 ) : (
                     <>
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                            {pets.map((pet) => (
+                            {pets.slice(0, displayCount).map((pet) => (
                                 <PetCard 
                                     key={pet.id} 
                                     pet={pet} 
