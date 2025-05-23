@@ -29,7 +29,7 @@ export default function Admin() {
     const [error, setError] = useState(null);
     const [formVisible, setFormVisible] = useState(false);
 
-    const API_URL = "http://localhost:8081/api";
+    const API_URL = "http://18.234.255.163:8081/api";
 
     // Fetch all pets
     const fetchPets = async () => {

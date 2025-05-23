@@ -15,7 +15,7 @@ const FeaturedPets = () => {
     const [error, setError] = useState(null);
     const [displayCount, setDisplayCount] = useState(3); // Default to showing 6 pets
 
-    const API_URL = "http://localhost:8081/api";
+    const API_URL = "http://18.234.255.163:8081/api";
 
     // Fetch pets from the API
     useEffect(() => {

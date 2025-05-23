@@ -18,7 +18,7 @@ const BrowsePets = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
-    const API_URL = "http://localhost:8081/api";
+    const API_URL = "http://18.234.255.163:8081/api";
 
     // Fetch all pets from the API
     useEffect(() => {

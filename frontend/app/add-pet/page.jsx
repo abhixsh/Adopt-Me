@@ -27,7 +27,7 @@ const ListPetForm = () => {
     const [success, setSuccess] = useState(false);
     const [photoPreview, setPhotoPreview] = useState(null);
 
-    const API_URL = "http://localhost:8081/api";
+    const API_URL = "http://18.234.255.163:8081/api";
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
